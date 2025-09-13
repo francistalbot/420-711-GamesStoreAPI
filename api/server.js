@@ -6,10 +6,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to the API" });
-});
+let publicFolder = __dirname + "/public";
+app.use(express.static(publicFolder));
 
 // Start server
 app.listen(3000, () => {
