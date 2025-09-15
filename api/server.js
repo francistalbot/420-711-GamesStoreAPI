@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 require("dotenv").config();
 
+const connectDB = require("./db");
 const gamesRoutes = require("./routes/games");
 
 const app = express();
@@ -14,14 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 let publicFolder = __dirname + "/public";
 app.use(express.static(publicFolder));
 
-// Connexion MongoDB
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("Connecté à MongoDB"))
-  .catch((err) => console.error("Erreur MongoDB :", err));
+// Connexion à la base de données
+connectDB();
 
 // Routes
 app.use("/games", gamesRoutes);
