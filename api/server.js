@@ -1,21 +1,33 @@
 const express = require("express");
+const mongoose = require("mongoose");
+require("dotenv").config();
+
+const gamesRoutes = require("./routes/games");
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
-let publicFolder = __dirname + "/public";
-app.use(express.static(publicFolder));
+// Connexion MongoDB
+mongoose
+  .connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connecté à MongoDB"))
+  .catch((err) => console.error("Erreur MongoDB :", err));
 
 // Routes
-const routes = require("./routes/games");
-app.use("/api/games", routes);
+app.use("/games", gamesRoutes);
 
-// Start server
-app.listen(3000, () => {
-  console.log(`Server is running on port 3000`);
+// Route de test
+app.get("/", (req, res) => {
+  res.json({ message: "Bienvenue sur l’API Jeux Vidéo " });
 });
 
-module.exports = app;
+// Démarrage serveur
+app.listen(PORT, () => {
+  console.log(`🚀 Serveur API démarré sur http://localhost:${PORT}`);
+});
