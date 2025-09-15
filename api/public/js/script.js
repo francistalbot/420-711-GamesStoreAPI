@@ -5,9 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 async function loadGames() {
   try {
-    const response = await fetch("/api/games");
+    const response = await fetch("/games");
     const games = await response.json();
-    console.log(games);
+    console.log("Liste des jeux:", games);
 
     const tableBody = document.getElementById("gameTableBody");
     tableBody.innerHTML = "";
@@ -58,7 +58,7 @@ function setupForm() {
     };
 
     try {
-      const response = await fetch("/api/games", {
+      const response = await fetch("/games", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
